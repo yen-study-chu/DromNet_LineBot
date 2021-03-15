@@ -9,17 +9,12 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
-from config import config
+import os
 
 app = Flask(__name__)
 
-if app.config["ENV"] == "production":
-    app.config.from_object(config['pro'])
-else:
-    app.config.from_object(config['dev'])
-
-line_bot_api = LineBotApi(app.config['LINE_BOT_ACCESS_TOKEN'])
-handler = WebhookHandler(app.config['LINE_BOT_SECRET'])
+line_bot_api = LineBotApi(os.environ.get("CHANNEL_ACCESS_TOKEN"))
+handler = WebhookHandler(os.environ.get("CHANNEL_SECRET"))
 
 
 @app.route("/callback", methods=['POST'])
