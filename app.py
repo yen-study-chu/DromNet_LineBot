@@ -11,12 +11,11 @@ from linebot.models import (
     URIAction, QuickReply, QuickReplyButton, RichMenu, RichMenuSize, RichMenuArea, RichMenuBounds, RichMenuResponse
 )
 import os
-from config import config
 
 app = Flask(__name__)
 
-#
 # =========== 載入開發時環境 ===========
+# from config import config
 # if app.config["ENV"] == "production":
 #     app.config.from_object(config['pro'])
 # else:
