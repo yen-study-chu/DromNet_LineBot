@@ -127,6 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-config.py
 .idea/
+
+# 開發時變數，請看 README.md
+config.py
