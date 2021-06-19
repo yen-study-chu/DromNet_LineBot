@@ -1,3 +1,4 @@
+from config import config
 from flask import Flask, request, abort, render_template, send_file
 from urllib.parse import urlparse
 from linebot import LineBotApi, WebhookHandler
@@ -34,18 +35,18 @@ import utils
 app = Flask(__name__)
 
 # =========== 載入開發時環境 ===========
-# from config import config
 
-# if app.config["ENV"] == "production":
-#     app.config.from_object(config["pro"])
-# else:
-#     app.config.from_object(config["dev"])
-# line_bot_api = LineBotApi(app.config["CHANNEL_ACCESS_TOKEN"])
-# handler = WebhookHandler(app.config["CHANNEL_SECRET"])
+if app.config["ENV"] == "production":
+    app.config.from_object(config["pro"])
+else:
+    app.config.from_object(config["dev"])
+line_bot_api = LineBotApi(app.config["CHANNEL_ACCESS_TOKEN"])
+handler = WebhookHandler(app.config["CHANNEL_SECRET"])
+
 
 # =========== 載入上線時環境 ===========
-line_bot_api = LineBotApi(os.environ.get("CHANNEL_ACCESS_TOKEN"))
-handler = WebhookHandler(os.environ.get("CHANNEL_SECRET"))
+# line_bot_api = LineBotApi(os.environ.get("CHANNEL_ACCESS_TOKEN"))
+# handler = WebhookHandler(os.environ.get("CHANNEL_SECRET"))
 
 
 @app.route("/", methods=["GET"])
@@ -59,7 +60,7 @@ def index():
 @app.route("/static/<path:filepath>/", methods=["GET"])
 def img(filepath=None):
     if filepath is None:
-        return render_template('404.html')
+        return render_template("404.html")
     else:
         with open(f"app/static/{filepath}", "rb") as bites:
             return send_file(io.BytesIO(bites.read()), mimetype="image/png")
@@ -141,13 +142,13 @@ def handle_message(event):
     # # Step 2 "一宿", "四宿"
     if event.message.text == "女生宿舍":
         buttons_template_message = utils.ButtonWindow(
-            title="請選擇妳的宿舍及樓層：",
+            title="請選擇妳的宿舍：",
             context="請選擇下面的選項：",
             number=2,
             label_list=["一宿", "四宿"],
         )
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
-    # # # Step 3
+    # # # Step 3 "一宿五樓"
     if event.message.text == "一宿五樓":
         image_message = utils.ImageWindow(
             origin_path=f"{host}/static/img/hinet/1-5.jpeg"
@@ -162,15 +163,349 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
     # # # Step 3
     if event.message.text == "一宿":
+        buttons_template_message = utils.ButtonWindow(
+            title="請選擇妳的樓層：",
+            context="請選擇下面的選項：",
+            number=3,
+            label_list=["一宿二樓", "一宿三樓", "一宿四樓"],
+        )
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
     # # # Step 3
     if event.message.text == "二宿":
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        buttons_template_message_1 = utils.ButtonWindow(
+            title="請選擇你的樓層：",
+            context="請選擇下面的選項：",
+            number=4,
+            label_list=["二宿二樓", "二宿三樓", "二宿四樓", "二宿五樓"],
+        )
+        buttons_template_message_2 = utils.ButtonWindow(
+            title="請選擇你的樓層：",
+            context="請選擇下面的選項：",
+            number=3,
+            label_list=["二宿六樓", "二宿七樓", "二宿八樓"],
+        )
+        line_bot_api.push_message(user, buttons_template_message_1)
+        line_bot_api.reply_message(
+            event.reply_token, buttons_template_message_2)
     # # # Step 3
     if event.message.text == "三宿":
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        buttons_template_message_1 = utils.ButtonWindow(
+            title="請選擇你的樓層：",
+            context="請選擇下面的選項：",
+            number=3,
+            label_list=["三宿一樓", "三宿二樓", "三宿三樓"],
+        )
+        buttons_template_message_2 = utils.ButtonWindow(
+            title="請選擇你的樓層：",
+            context="請選擇下面的選項：",
+            number=3,
+            label_list=["三宿四樓", "三宿五樓", "三宿六樓"],
+        )
+        line_bot_api.push_message(user, buttons_template_message_1)
+        line_bot_api.reply_message(
+            event.reply_token, buttons_template_message_2)
     # # # Step 3
     if event.message.text == "四宿":
+        buttons_template_message_1 = utils.ButtonWindow(
+            title="請選擇妳的樓層：",
+            context="請選擇下面的選項：",
+            number=3,
+            label_list=["四宿一樓", "四宿二樓", "四宿三樓"],
+        )
+        buttons_template_message_2 = utils.ButtonWindow(
+            title="請選擇妳的樓層：",
+            context="請選擇下面的選項：",
+            number=3,
+            label_list=["四宿四樓", "四宿五樓", "四宿六樓"],
+        )
+        line_bot_api.push_message(user, buttons_template_message_1)
+        line_bot_api.reply_message(
+            event.reply_token, buttons_template_message_2)
+
+    if event.message.text == "一宿二樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/1-2.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "一宿三樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/1-3.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "一宿四樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/1-4.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "二宿二樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/2-2.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "二宿三樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/2-3.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "二宿四樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/2-4.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "二宿五樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/2-5.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "二宿六樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/2-6.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "二宿七樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/2-7.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "二宿八樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/2-8.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "三宿一樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/3-1.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "三宿二樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/3-2.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "三宿三樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/3-3.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "三宿四樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/3-4.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "三宿五樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/3-5.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "三宿六樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/3-6.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "四宿一樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/4-1.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "四宿二樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/4-2.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "四宿三樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/4-3.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "四宿四樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/4-4.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "四宿五樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/4-5.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+
+    if event.message.text == "四宿六樓":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/hinet/4-6.jpeg"
+        )
+        buttons_template_message = utils.ButtonWindow(
+            title="請找自己的連線帳號：",
+            context="請找到同寢室的「HN 帳號」，並在後面加上「@hinet.net」\n範例：1501房為 72186749，那帳號就是「72186749@hinet.net」。",
+            number=3,
+            label_list=["網路連線教學", "網路故障報修", "重新選擇宿舍"],
+        )
+        line_bot_api.push_message(user, image_message)
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
 
     # options: 網路連線教學, 網路故障報修
@@ -342,8 +677,10 @@ def handle_message(event):
                  + utils.Separate(30),
             quick_reply=QuickReply(
                 items=[
-                    QuickReplyButton(action=MessageAction(label="我是新生 👋", text="新生")),
-                    QuickReplyButton(action=MessageAction(label="我是舊生 🤟", text="舊生")),
+                    QuickReplyButton(action=MessageAction(
+                        label="我是新生 👋", text="新生")),
+                    QuickReplyButton(action=MessageAction(
+                        label="我是舊生 🤟", text="舊生")),
                 ]
             ),
         )

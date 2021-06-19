@@ -33,18 +33,6 @@ def ConfirmWindow(context, sucess_string, error_string):
 
 
 def ButtonWindow(title, context, number, label_list):
-    #     buttons_template_message = TemplateSendMessage(
-    #         alt_text="歡迎使用中華大學宿網會的簡易小機器人, 請點擊下方按鈕進行下一步。",
-    #         template=ButtonsTemplate(
-    #             title="請問您的電腦系統為何？",
-    #             text="請選擇下面的選項。",
-    #             actions=[
-    #                 MessageAction(label="Windows", text="Windows"),
-    #                 MessageAction(label="Apple macOS", text="macOS"),
-    #                 MessageAction(label="上一步", text="網路連線教學"),
-    #             ],
-    #         ),
-    #     )
     if number == len(label_list):
         actions = []
         for i in range(0, number):
