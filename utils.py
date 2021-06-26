@@ -1,7 +1,9 @@
+from linebot.models import template
 from linebot.models.actions import MessageAction
 from linebot.models.send_messages import ImageSendMessage
 from linebot.models.template import (
     ButtonsTemplate,
+    CarouselColumn,
     ConfirmTemplate,
     TemplateSendMessage,
 )

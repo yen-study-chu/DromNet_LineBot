@@ -23,6 +23,7 @@ app = Flask(__name__)
 
 # =========== 載入開發時環境 ===========
 # from config import config
+
 # if app.config["ENV"] == "production":
 #     app.config.from_object(config["pro"])
 # else:
@@ -612,53 +613,212 @@ def handle_message(event):
         )
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
     # options: 網路帳號密碼查詢,
-    elif event.message.text == "Windows 7":
+    elif event.message.text == "Windows 7" or event.message.text == "Windows 8":
         # TODO userId 取法, github issue https://github.com/line/line-bot-sdk-python/issues/139
         user = event.source.user_id
-        text = "網路設定步驟如下：\n開啟【控制台】>【網路和網際網路】>【設定新的連線與網路】>【選擇連線到網際網路】>【下一步】>【寬頻(PPPOE)】 > 輸入使用者帳號及密碼。"
-        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
+        if event.message.text == "Windows 8":
+            text = "Windows 8 進入控制台方式，可以參考：\nhttps://dotblogs.com.tw/chou/2012/06/13/72763\n進入控制台請跳至下方第一步。"
+            line_bot_api.push_message(to=user, messages=TextSendMessage(text))
+        text = "網路設定步驟如下：\n開啟【控制台】>【網路和網際網路】的【檢視網際狀態及工作】>【設定新的連線與網路】>【選擇連線到網際網路】>【下一步】>【寬頻(PPPOE)】 > 輸入使用者帳號及密碼。"
+        carousel_template_message = TemplateSendMessage(
+            alt_text="歡迎使用中華大學宿網會的簡易小機器人, 請至手機查看訊息。",
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/7_0.png",
+                        title="Win7：進入控制台(Win7)",
+                        text="如上圖所示，\n點擊「Windows按鍵」後左鍵點擊「控制台」。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/7_1.png",
+                        title="第一步：檢視網際狀態及工作",
+                        text="如上圖所示。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/7_2.png",
+                        title="第二步：設定新的網路連線",
+                        text="如上圖所示，直接設定新連線。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/7_3.png",
+                        title="第四步：點擊連線到網際網路",
+                        text="如上圖所示，點擊「連線到網際網路」，點選下一步。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/7_4.png",
+                        title="第五步：選擇寬頻連線(PPPOE)",
+                        text="如上圖所示，點擊寬頻(PPPOE)。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/7_5.png",
+                        title="第六步：輸入連線的HN帳號及密碼",
+                        text="如上圖所示，輸入HN帳號及密碼，若忘記可以到下面點選「不知道帳號密碼」。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/7_6.png",
+                        title="第七步：確認畫面及測試",
+                        text="如上圖所示，出現了「連線已經可以使用」，可以將瀏覽器打開，測試是否能上網。不能請點選「我需要協助」。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                ]
+            ),
+        )
         confirm_template_message = utils.ButtonWindow(
             title="請問有解決你的問題嗎？",
             context="請選擇下面的選項。",
             number=3,
             label_list=["不知道帳號密碼", "我需要協助", "已完成"],
         )
-        line_bot_api.reply_message(event.reply_token, confirm_template_message)
-    # options: 網路帳號密碼查詢,
-    elif event.message.text == "Windows 8":
-        user = event.source.user_id
-        text = "網路設定步驟如下：\n開啟【網路和共用中心】>【設定新的連線與網路】>【選擇連線到網際網路】>【下一步】>【寬頻(PPPOE)】> 輸入使用者帳號及密碼。"
+        line_bot_api.push_message(to=user, messages=carousel_template_message)
         line_bot_api.push_message(to=user, messages=TextSendMessage(text))
-        confirm_template_message = utils.ButtonWindow(
-            title="請問有解決你的問題嗎？",
-            context="請選擇下面的選項。",
-            number=3,
-            label_list=["不知道帳號密碼", "我需要協助", "已完成"],
-        )
         line_bot_api.reply_message(event.reply_token, confirm_template_message)
     # options: 網路帳號密碼查詢,
     elif event.message.text == "Windows 10":
         user = event.source.user_id
-        text = "網路設定步驟如下：\n開啟【控制台】>【網路和網際網路】>【網路和共用】>【設定新的連線與網路】>【選擇連線到網際網路】>【下一步】>【寬頻(PPPOE)】> 輸入使用者帳號及密碼。"
-        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
+        carousel_template_message = TemplateSendMessage(
+            alt_text="歡迎使用中華大學宿網會的簡易小機器人, 請至手機查看訊息。",
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/10_0.png",
+                        title="第一步：進入連線設定頁面",
+                        text="如上圖所示，\n右鍵點擊「網路圖示」，選取「開啟網路和網際網路設定」。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/10_1.png",
+                        title="第二步：使用網路線接上電腦",
+                        text="如上圖所示，\n插上網路線後，點擊撥號。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/10_2.png",
+                        title="第三步：設定新連線",
+                        text="如上圖所示，直接設定新連線。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/10_3.png",
+                        title="第四步：點擊連線到網際網路",
+                        text="如上圖所示，點擊「連線到網際網路」。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/10_4.png",
+                        title="第五步：選擇寬頻連線(PPPOE)",
+                        text="如上圖所示，點擊寬頻(PPPOE)。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/10_5.png",
+                        title="第六步：輸入連線的HN帳號及密碼",
+                        text="如上圖所示，輸入HN帳號及密碼，若忘記可以到下面點選「不知道帳號密碼」。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/win/10_5.png",
+                        title="第七步：確認畫面及測試",
+                        text="如上圖所示，出現了「您已連線到網際網路」，可以將瀏覽器打開，測試是否能上網。不能請點選「我需要協助」。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                ]
+            ),
+        )
+        text = "網路設定步驟如下：\n右鍵點擊【網路圖示】> 左鍵點擊【開啟網路和網際網路設定】>【撥號】>【設定新的連線】>【連線到網際網路】>【寬頻(PPPOE)】> 【輸入連線的HN帳號及密碼】。"
         confirm_template_message = utils.ButtonWindow(
             title="請問有解決你的問題嗎？",
             context="請選擇下面的選項。",
             number=3,
             label_list=["不知道帳號密碼", "我需要協助", "已完成"],
         )
+        line_bot_api.push_message(user, carousel_template_message)
+        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
         line_bot_api.reply_message(event.reply_token, confirm_template_message)
     # options: 網路帳號密碼查詢,
     elif event.message.text == "macOS":
         user = event.source.user_id
-        text = "網路設定步驟如下：\n【系統偏好設定】>【網路】>【點及左側底部「加入」並選擇 PPPoE】>【按一下「乙太網路」彈出式選單】> 輸入使用者帳號及密碼。"
-        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
+        carousel_template_message = TemplateSendMessage(
+            alt_text="歡迎使用中華大學宿網會的簡易小機器人, 請至手機查看訊息。",
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/mac/m1.png",
+                        title="第一步：點擊網路偏好服務",
+                        text="如上圖所示，\n滑鼠移至 WIFI 圖示左鍵點擊後，\n再點選網路偏好服務。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/mac/m2.png",
+                        title="第二步：建立 PPPOE 服務",
+                        text="插上轉接器後，才會跳出此畫面。\n接者如上圖所示：\n點選設定IPv4 > 建立 PPPOE 服務。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/mac/m4.png",
+                        title="第三步：輸入網路帳號密碼",
+                        text="如上圖所示，輸入HN帳號名稱及密碼，\n不知道帳號可以點擊下面「不知道帳號密碼」",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/mac/m5.png",
+                        title="第四步：完成連線",
+                        text="點擊連線後，就可以正常使用連線囉！\n如果還是不能使用，\n請點擊下面「我需要協助」。",
+                        actions=[
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                        ],
+                    ),
+                ]
+            ),
+        )
+        text = "網路設定步驟如下：\n【左上角蘋果圖示】>【系統偏好設定】>【網路】>【插上轉接頭】>【點擊左側 USB】>【點擊右側 IPv4】> 【建立 PPPOE 服務】> 【輸入HN帳號及密碼】> 【點擊連線】。"
         confirm_template_message = utils.ButtonWindow(
             title="請問有解決你的問題嗎？",
             context="請選擇下面的選項。",
             number=3,
             label_list=["不知道帳號密碼", "我需要協助", "已完成"],
         )
+        line_bot_api.push_message(user, carousel_template_message)
+        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
         line_bot_api.reply_message(event.reply_token, confirm_template_message)
     elif event.message.text == "已完成":
         text = "很高興你已經可以使用宿舍網路了！我們下次見～"
@@ -681,8 +841,10 @@ def handle_message(event):
                 items=[
                     QuickReplyButton(action=MessageAction(label="我是新生 👋", text="新生")),
                     QuickReplyButton(action=MessageAction(label="我是舊生 🤟", text="舊生")),
-                    QuickReplyButton(action=MessageAction(label="連線教學", text="連線教學")),
-                    QuickReplyButton(action=MessageAction(label="我需要協助", text="我需要協助")),
+                    QuickReplyButton(action=MessageAction(label="連線教學 👌", text="連線教學")),
+                    QuickReplyButton(
+                        action=MessageAction(label="我需要協助 🤝", text="我需要協助")
+                    ),
                 ]
             ),
         )
