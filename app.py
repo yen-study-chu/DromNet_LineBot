@@ -616,9 +616,6 @@ def handle_message(event):
     elif event.message.text == "Windows 7" or event.message.text == "Windows 8":
         # TODO userId 取法, github issue https://github.com/line/line-bot-sdk-python/issues/139
         user = event.source.user_id
-        if event.message.text == "Windows 8":
-            text = "Windows 8 進入控制台方式，可以參考：\nhttps://dotblogs.com.tw/chou/2012/06/13/72763\n進入控制台請跳至下方第一步。"
-            line_bot_api.push_message(to=user, messages=TextSendMessage(text))
         text = "網路設定步驟如下：\n開啟【控制台】>【網路和網際網路】的【檢視網際狀態及工作】>【設定新的連線與網路】>【選擇連線到網際網路】>【下一步】>【寬頻(PPPOE)】 > 輸入使用者帳號及密碼。"
         carousel_template_message = TemplateSendMessage(
             alt_text="歡迎使用中華大學宿網會的簡易小機器人, 請至手機查看訊息。",
@@ -683,6 +680,8 @@ def handle_message(event):
                 ]
             ),
         )
+        if event.message.text == "Windows 8":
+            text += "Windows 8 進入控制台方式，可以參考：\nhttps://dotblogs.com.tw/chou/2012/06/13/72763\n進入控制台請跳至下方第一步。"
         confirm_template_message = utils.ButtonWindow(
             title="請問有解決你的問題嗎？",
             context="請選擇下面的選項。",
