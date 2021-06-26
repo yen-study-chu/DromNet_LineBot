@@ -77,6 +77,7 @@ def callback():
 def handle_message(event):
     host = f"https://{urlparse(request.base_url).hostname}"
     user = event.source.user_id
+    # is_file = str(event.message.text.split(".")[-1])
     # Step 1
     if event.message.text == "新生":
         carousel_template_message = TemplateSendMessage(
@@ -88,7 +89,11 @@ def handle_message(event):
                         title="第一步：購買一條網路線",
                         text="規格：RJ-45 接口。\n長度：建議先到床位測量使用範圍。\n需要將網路線插入床位的壁孔才能使用。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定")
+                            # MessageAction(
+                            #     label="圖片放大",
+                            #     text=f"{host}/static/img/new/s1_link.jpeg",
+                            # ),
                         ],
                     ),
                     CarouselColumn(
@@ -623,7 +628,7 @@ def handle_message(event):
                 columns=[
                     CarouselColumn(
                         thumbnail_image_url=f"{host}/static/img/win/7_0.png",
-                        title="Win7：進入控制台(Win7)",
+                        title="Win7：進入控制台",
                         text="如上圖所示，\n點擊「Windows按鍵」後左鍵點擊「控制台」。",
                         actions=[
                             MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
@@ -791,7 +796,7 @@ def handle_message(event):
                         ],
                     ),
                     CarouselColumn(
-                        thumbnail_image_url=f"{host}/static/img/mac/m4.png",
+                        thumbnail_image_url=f"{host}/static/img/mac/m3.png",
                         title="第三步：輸入網路帳號密碼",
                         text="如上圖所示，輸入HN帳號名稱及密碼，\n不知道帳號可以點擊下面「不知道帳號密碼」",
                         actions=[
@@ -799,7 +804,7 @@ def handle_message(event):
                         ],
                     ),
                     CarouselColumn(
-                        thumbnail_image_url=f"{host}/static/img/mac/m5.png",
+                        thumbnail_image_url=f"{host}/static/img/mac/m4.png",
                         title="第四步：完成連線",
                         text="點擊連線後，就可以正常使用連線囉！\n如果還是不能使用，\n請點擊下面「我需要協助」。",
                         actions=[
@@ -828,6 +833,11 @@ def handle_message(event):
     elif event.message.text == "請遵守約定":
         text = "這邊還沒做, 請等宿網會一下。"
         line_bot_api.push_message(to=user, messages=TextSendMessage(text))
+    # elif str(event.message.text).split("https") and (
+    #     is_file == "jpeg" or is_file == "png"
+    # ):
+    #     image_message = utils.ImageWindow(origin_path=f"{event.message.text}")
+    #     line_bot_api.reply_message(event.reply_token, confirm_template_message)
     else:
         text_message = TextSendMessage(
             text="請點擊下方按鈕開始對話。\n"
