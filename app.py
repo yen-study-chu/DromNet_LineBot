@@ -681,7 +681,7 @@ def handle_message(event):
             ),
         )
         if event.message.text == "Windows 8":
-            text += "Windows 8 進入控制台方式，可以參考：\nhttps://dotblogs.com.tw/chou/2012/06/13/72763\n進入控制台請跳至下方第一步。"
+            text += "\nWindows 8 進入控制台方式，可以參考：\nhttps://dotblogs.com.tw/chou/2012/06/13/72763\n進入控制台請跳至下方第一步。"
         confirm_template_message = utils.ButtonWindow(
             title="請問有解決你的問題嗎？",
             context="請選擇下面的選項。",
