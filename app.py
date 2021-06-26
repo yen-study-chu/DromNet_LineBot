@@ -1,4 +1,3 @@
-from config import config
 from flask import Flask, request, abort, render_template, send_file
 from urllib.parse import urlparse
 
@@ -23,14 +22,13 @@ import os
 app = Flask(__name__)
 
 # =========== 載入開發時環境 ===========
-
+# from config import config
 # if app.config["ENV"] == "production":
 #     app.config.from_object(config["pro"])
 # else:
 #     app.config.from_object(config["dev"])
 # line_bot_api = LineBotApi(app.config["CHANNEL_ACCESS_TOKEN"])
 # handler = WebhookHandler(app.config["CHANNEL_SECRET"])
-
 
 # =========== 載入上線時環境 ===========
 line_bot_api = LineBotApi(os.environ.get("CHANNEL_ACCESS_TOKEN"))
@@ -142,7 +140,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/1-5.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -176,8 +175,7 @@ def handle_message(event):
             label_list=["二宿六樓", "二宿七樓", "二宿八樓"],
         )
         line_bot_api.push_message(user, buttons_template_message_1)
-        line_bot_api.reply_message(
-            event.reply_token, buttons_template_message_2)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message_2)
     # # # Step 3
     elif event.message.text == "三宿":
         buttons_template_message_1 = utils.ButtonWindow(
@@ -193,8 +191,7 @@ def handle_message(event):
             label_list=["三宿四樓", "三宿五樓", "三宿六樓"],
         )
         line_bot_api.push_message(user, buttons_template_message_1)
-        line_bot_api.reply_message(
-            event.reply_token, buttons_template_message_2)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message_2)
     # # # Step 3
     elif event.message.text == "四宿":
         buttons_template_message_1 = utils.ButtonWindow(
@@ -210,15 +207,15 @@ def handle_message(event):
             label_list=["四宿四樓", "四宿五樓", "四宿六樓"],
         )
         line_bot_api.push_message(user, buttons_template_message_1)
-        line_bot_api.reply_message(
-            event.reply_token, buttons_template_message_2)
+        line_bot_api.reply_message(event.reply_token, buttons_template_message_2)
 
     elif event.message.text == "一宿二樓":
         image_message = utils.ImageWindow(
             origin_path=f"{host}/static/img/hinet/1-2.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -234,7 +231,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/1-3.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -250,7 +248,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/1-4.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -266,7 +265,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/2-2.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -282,7 +282,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/2-3.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -298,7 +299,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/2-4.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -314,7 +316,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/2-5.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -330,7 +333,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/2-6.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -346,7 +350,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/2-7.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -362,7 +367,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/2-8.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -378,7 +384,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/3-1.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -394,7 +401,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/3-2.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -410,7 +418,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/3-3.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -426,7 +435,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/3-4.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -442,7 +452,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/3-5.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -458,7 +469,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/3-6.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -474,7 +486,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/4-1.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -490,7 +503,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/4-2.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -506,7 +520,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/4-3.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -522,7 +537,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/4-4.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -538,7 +554,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/4-5.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -554,7 +571,8 @@ def handle_message(event):
             origin_path=f"{host}/static/img/hinet/4-6.jpeg"
         )
         alert_message = TextSendMessage(
-            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。")
+            text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
+        )
         buttons_template_message = utils.ButtonWindow(
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
@@ -565,7 +583,11 @@ def handle_message(event):
         line_bot_api.push_message(user, alert_message)
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
 
-    elif event.message.text == "舊生" or event.message.text == "不知道帳號密碼" or event.message.text == "重新選擇宿舍":
+    elif (
+        event.message.text == "舊生"
+        or event.message.text == "不知道帳號密碼"
+        or event.message.text == "重新選擇宿舍"
+    ):
         confirm_template_message = utils.ConfirmWindow(
             context="請問您是屬於？", sucess_string="男生宿舍", error_string="女生宿舍"
         )
@@ -599,7 +621,7 @@ def handle_message(event):
             title="請問有解決你的問題嗎？",
             context="請選擇下面的選項。",
             number=3,
-            label_list=["不知道帳號密碼", "我需要協助", "已完成"]
+            label_list=["不知道帳號密碼", "我需要協助", "已完成"],
         )
         line_bot_api.reply_message(event.reply_token, confirm_template_message)
     # options: 網路帳號密碼查詢,
@@ -611,7 +633,7 @@ def handle_message(event):
             title="請問有解決你的問題嗎？",
             context="請選擇下面的選項。",
             number=3,
-            label_list=["不知道帳號密碼", "我需要協助", "已完成"]
+            label_list=["不知道帳號密碼", "我需要協助", "已完成"],
         )
         line_bot_api.reply_message(event.reply_token, confirm_template_message)
     # options: 網路帳號密碼查詢,
@@ -623,7 +645,7 @@ def handle_message(event):
             title="請問有解決你的問題嗎？",
             context="請選擇下面的選項。",
             number=3,
-            label_list=["不知道帳號密碼", "我需要協助", "已完成"]
+            label_list=["不知道帳號密碼", "我需要協助", "已完成"],
         )
         line_bot_api.reply_message(event.reply_token, confirm_template_message)
     # options: 網路帳號密碼查詢,
@@ -635,7 +657,7 @@ def handle_message(event):
             title="請問有解決你的問題嗎？",
             context="請選擇下面的選項。",
             number=3,
-            label_list=["不知道帳號密碼", "我需要協助", "已完成"]
+            label_list=["不知道帳號密碼", "我需要協助", "已完成"],
         )
         line_bot_api.reply_message(event.reply_token, confirm_template_message)
     elif event.message.text == "已完成":
@@ -650,23 +672,19 @@ def handle_message(event):
     else:
         text_message = TextSendMessage(
             text="請點擊下方按鈕開始對話。\n"
-                 + utils.Separate(30)
-                 + "\n請依照自己的身份進行選擇：\n"
-                 + "\n尚未入住過宿舍，請點選「我是新生 👋」"
-                 + "\n已經入住過宿舍，請點選「我是舊生 🤟」"
-                 + utils.Separate(30),
+            + utils.Separate(30)
+            + "\n請依照自己的身份進行選擇：\n"
+            + "\n尚未入住過宿舍，請點選「我是新生 👋」"
+            + "\n已經入住過宿舍，請點選「我是舊生 🤟」"
+            + utils.Separate(30),
             quick_reply=QuickReply(
                 items=[
-                    QuickReplyButton(action=MessageAction(
-                        label="我是新生 👋", text="新生")),
-                    QuickReplyButton(action=MessageAction(
-                        label="我是舊生 🤟", text="舊生")),
-                    QuickReplyButton(action=MessageAction(
-                        label="連線教學", text="連線教學")),
-                    QuickReplyButton(action=MessageAction(
-                        label="我需要協助", text="我需要協助")),
+                    QuickReplyButton(action=MessageAction(label="我是新生 👋", text="新生")),
+                    QuickReplyButton(action=MessageAction(label="我是舊生 🤟", text="舊生")),
+                    QuickReplyButton(action=MessageAction(label="連線教學", text="連線教學")),
+                    QuickReplyButton(action=MessageAction(label="我需要協助", text="我需要協助")),
                 ]
-                 ),
+            ),
         )
         line_bot_api.reply_message(event.reply_token, text_message)
     return "OK2"
