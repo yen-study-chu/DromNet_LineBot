@@ -23,18 +23,18 @@ import os
 app = Flask(__name__)
 
 # =========== 載入開發時環境 ===========
-from config import config
+# from config import config
 
-if app.config["ENV"] == "production":
-    app.config.from_object(config["pro"])
-else:
-    app.config.from_object(config["dev"])
-line_bot_api = LineBotApi(app.config["CHANNEL_ACCESS_TOKEN"])
-handler = WebhookHandler(app.config["CHANNEL_SECRET"])
+# if app.config["ENV"] == "production":
+#     app.config.from_object(config["pro"])
+# else:
+#     app.config.from_object(config["dev"])
+# line_bot_api = LineBotApi(app.config["CHANNEL_ACCESS_TOKEN"])
+# handler = WebhookHandler(app.config["CHANNEL_SECRET"])
 
 # =========== 載入上線時環境 ===========
-# line_bot_api = LineBotApi(os.environ.get("CHANNEL_ACCESS_TOKEN"))
-# handler = WebhookHandler(os.environ.get("CHANNEL_SECRET"))
+line_bot_api = LineBotApi(os.environ.get("CHANNEL_ACCESS_TOKEN"))
+handler = WebhookHandler(os.environ.get("CHANNEL_SECRET"))
 
 
 @app.route("/", methods=["GET"])
