@@ -157,7 +157,7 @@ def handle_message(event):
             title="透過上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -231,7 +231,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -248,7 +248,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -265,7 +265,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -282,7 +282,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -299,7 +299,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -316,7 +316,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -333,7 +333,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -350,7 +350,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -367,7 +367,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -384,7 +384,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -401,7 +401,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -418,7 +418,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -435,7 +435,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -452,7 +452,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -469,7 +469,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -486,7 +486,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -503,7 +503,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -520,7 +520,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -537,7 +537,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -554,7 +554,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -571,7 +571,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
@@ -588,7 +588,7 @@ def handle_message(event):
             title="請根據上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
-            label_list=["連線教學", "故障報修", "重新選擇宿舍"],
+            label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
