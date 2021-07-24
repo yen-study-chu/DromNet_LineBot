@@ -600,7 +600,7 @@ def handle_message(event):
         or event.message.text == "重新選擇宿舍"
     ):
         confirm_template_message = utils.ConfirmWindow(
-            context="請問您是屬於？", sucess_string="男生宿舍", error_string="女生宿舍"
+            context="請問您是屬於？", success_string="男生宿舍", error_string="女生宿舍"
         )
         line_bot_api.reply_message(event.reply_token, confirm_template_message)
 
