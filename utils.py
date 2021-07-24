@@ -3,7 +3,6 @@ from linebot.models.actions import MessageAction
 from linebot.models.send_messages import ImageSendMessage
 from linebot.models.template import (
     ButtonsTemplate,
-    CarouselColumn,
     ConfirmTemplate,
     TemplateSendMessage,
 )
@@ -13,7 +12,7 @@ def Separate(n):
     return "=" * n
 
 
-def ConfirmWindow(context, sucess_string, error_string):
+def ConfirmWindow(context, success_string, error_string):
     """
     重複使用只有對或錯的確認視窗
 
@@ -26,7 +25,7 @@ def ConfirmWindow(context, sucess_string, error_string):
         template=ConfirmTemplate(
             text=f"{context}",
             actions=[
-                MessageAction(label=f"{sucess_string}", text=f"{sucess_string}"),
+                MessageAction(label=f"{success_string}", text=f"{success_string}"),
                 MessageAction(label=f"{error_string}", text=f"{error_string}"),
             ],
         ),

@@ -13,6 +13,7 @@ from linebot.models import (
     QuickReplyButton,
     ConfirmTemplate,
 )
+from linebot.models.actions import URIAction
 from linebot.models.template import CarouselColumn, CarouselTemplate
 
 import utils
@@ -22,18 +23,18 @@ import os
 app = Flask(__name__)
 
 # =========== 載入開發時環境 ===========
-# from config import config
+from config import config
 
-# if app.config["ENV"] == "production":
-#     app.config.from_object(config["pro"])
-# else:
-#     app.config.from_object(config["dev"])
-# line_bot_api = LineBotApi(app.config["CHANNEL_ACCESS_TOKEN"])
-# handler = WebhookHandler(app.config["CHANNEL_SECRET"])
+if app.config["ENV"] == "production":
+    app.config.from_object(config["pro"])
+else:
+    app.config.from_object(config["dev"])
+line_bot_api = LineBotApi(app.config["CHANNEL_ACCESS_TOKEN"])
+handler = WebhookHandler(app.config["CHANNEL_SECRET"])
 
 # =========== 載入上線時環境 ===========
-line_bot_api = LineBotApi(os.environ.get("CHANNEL_ACCESS_TOKEN"))
-handler = WebhookHandler(os.environ.get("CHANNEL_SECRET"))
+# line_bot_api = LineBotApi(os.environ.get("CHANNEL_ACCESS_TOKEN"))
+# handler = WebhookHandler(os.environ.get("CHANNEL_SECRET"))
 
 
 @app.route("/", methods=["GET"])
@@ -77,7 +78,6 @@ def callback():
 def handle_message(event):
     host = f"https://{urlparse(request.base_url).hostname}"
     user = event.source.user_id
-    # is_file = str(event.message.text.split(".")[-1])
     # Step 1
     if event.message.text == "新生":
         carousel_template_message = TemplateSendMessage(
@@ -85,31 +85,36 @@ def handle_message(event):
             template=CarouselTemplate(
                 columns=[
                     CarouselColumn(
-                        thumbnail_image_url=f"{host}/static/img/new/s1_link.jpeg",
+                        thumbnail_image_url=f"{host}/static/img/new/s1.jpeg",
                         title="第一步：購買一條網路線",
                         text="規格：RJ-45 接口。\n長度：建議先到床位測量使用範圍。\n需要將網路線插入床位的壁孔才能使用。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定")
-                            # MessageAction(
-                            #     label="圖片放大",
-                            #     text=f"{host}/static/img/new/s1_link.jpeg",
-                            # ),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/new/s1.jpeg",
+                            ),
                         ],
                     ),
                     CarouselColumn(
-                        thumbnail_image_url=f"{host}/static/img/new/s2_check_computer.jpeg",
+                        thumbnail_image_url=f"{host}/static/img/new/s2.jpeg",
                         title="第二步：檢查電腦有無網路孔",
                         text="有網路孔請回答下面視窗，\n無網路孔請往右滑向第三步。\n學校宿舍內無 WelIFI，教室則有公共 WelIFI。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/new/s2.jpeg",
+                            )
                         ],
                     ),
                     CarouselColumn(
-                        thumbnail_image_url=f"{host}/static/img/new/s3_rj45_to_usb.jpeg",
+                        thumbnail_image_url=f"{host}/static/img/new/s3.jpeg",
                         title="第三步：電腦無網路孔需購買轉接頭",
                         text="轉接頭名稱：「RJ-45 轉 USB」",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/new/s3.jpeg",
+                            )
                         ],
                     ),
                 ]
@@ -117,7 +122,7 @@ def handle_message(event):
         )
 
         confirm_template_message = utils.ConfirmWindow(
-            context="上面步驟已完成，你是屬於？", sucess_string="男生宿舍", error_string="女生宿舍"
+            context="上面步驟已完成，你是屬於？", success_string="男生宿舍", error_string="女生宿舍"
         )
 
         line_bot_api.push_message(user, carousel_template_message)
@@ -149,7 +154,7 @@ def handle_message(event):
             text=f"請找到同寢室的「HN 帳號」，\n並在後面加上「@hinet.net」\n{utils.Separate(10)} \n範例：1501房為 72186749，\n那帳號就是「72186749@hinet.net」，\n密碼全校宿舍皆為：「123456」。"
         )
         buttons_template_message = utils.ButtonWindow(
-            title="請根據上則訊息尋找連線帳號密碼：",
+            title="透過上則訊息尋找連線帳號密碼：",
             context="請選擇下列選項。",
             number=3,
             label_list=["連線教學", "故障報修", "重新選擇宿舍"],
@@ -157,7 +162,7 @@ def handle_message(event):
         line_bot_api.push_message(user, image_message)
         line_bot_api.push_message(user, alert_message)
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
-    # # # Step 3
+    # # # Step 3 "一宿"
     elif event.message.text == "一宿":
         buttons_template_message = utils.ButtonWindow(
             title="請選擇妳的樓層：",
@@ -166,7 +171,7 @@ def handle_message(event):
             label_list=["一宿二樓", "一宿三樓", "一宿四樓"],
         )
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
-    # # # Step 3
+    # # # Step 3 "二宿"
     elif event.message.text == "二宿":
         buttons_template_message_1 = utils.ButtonWindow(
             title="請選擇你的樓層：",
@@ -182,7 +187,7 @@ def handle_message(event):
         )
         line_bot_api.push_message(user, buttons_template_message_1)
         line_bot_api.reply_message(event.reply_token, buttons_template_message_2)
-    # # # Step 3
+    # # # Step 3 "三宿"
     elif event.message.text == "三宿":
         buttons_template_message_1 = utils.ButtonWindow(
             title="請選擇你的樓層：",
@@ -198,7 +203,7 @@ def handle_message(event):
         )
         line_bot_api.push_message(user, buttons_template_message_1)
         line_bot_api.reply_message(event.reply_token, buttons_template_message_2)
-    # # # Step 3
+    # # # Step 3 "四宿"
     elif event.message.text == "四宿":
         buttons_template_message_1 = utils.ButtonWindow(
             title="請選擇妳的樓層：",
@@ -631,7 +636,10 @@ def handle_message(event):
                         title="Win7：進入控制台",
                         text="如上圖所示，\n點擊「Windows按鍵」後左鍵點擊「控制台」。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/7_0.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -639,7 +647,10 @@ def handle_message(event):
                         title="第一步：檢視網際狀態及工作",
                         text="如上圖所示。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/7_1.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -647,7 +658,10 @@ def handle_message(event):
                         title="第二步：設定新的網路連線",
                         text="如上圖所示，直接設定新連線。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/7_2.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -655,7 +669,10 @@ def handle_message(event):
                         title="第四步：點擊連線到網際網路",
                         text="如上圖所示，點擊「連線到網際網路」，點選下一步。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/7_3.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -663,7 +680,10 @@ def handle_message(event):
                         title="第五步：選擇寬頻連線(PPPOE)",
                         text="如上圖所示，點擊寬頻(PPPOE)。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/7_4.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -671,7 +691,10 @@ def handle_message(event):
                         title="第六步：輸入連線的HN帳號及密碼",
                         text="如上圖所示，輸入HN帳號及密碼，若忘記可以到下面點選「不知道帳號密碼」。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/7_5.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -679,7 +702,10 @@ def handle_message(event):
                         title="第七步：確認畫面及測試",
                         text="如上圖所示，出現了「連線已經可以使用」，可以將瀏覽器打開，測試是否能上網。不能請點選「我需要協助」。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/7_6.png",
+                            ),
                         ],
                     ),
                 ]
@@ -708,7 +734,10 @@ def handle_message(event):
                         title="第一步：進入連線設定頁面",
                         text="如上圖所示，\n右鍵點擊「網路圖示」，選取「開啟網路和網際網路設定」。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/10_0.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -716,7 +745,10 @@ def handle_message(event):
                         title="第二步：使用網路線接上電腦",
                         text="如上圖所示，\n插上網路線後，點擊撥號。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/10_1.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -724,7 +756,10 @@ def handle_message(event):
                         title="第三步：設定新連線",
                         text="如上圖所示，直接設定新連線。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/10_2.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -732,7 +767,10 @@ def handle_message(event):
                         title="第四步：點擊連線到網際網路",
                         text="如上圖所示，點擊「連線到網際網路」。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/10_3.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -740,7 +778,10 @@ def handle_message(event):
                         title="第五步：選擇寬頻連線(PPPOE)",
                         text="如上圖所示，點擊寬頻(PPPOE)。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/10_4.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -748,15 +789,21 @@ def handle_message(event):
                         title="第六步：輸入連線的HN帳號及密碼",
                         text="如上圖所示，輸入HN帳號及密碼，若忘記可以到下面點選「不知道帳號密碼」。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/10_5.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
-                        thumbnail_image_url=f"{host}/static/img/win/10_5.png",
+                        thumbnail_image_url=f"{host}/static/img/win/10_6.png",
                         title="第七步：確認畫面及測試",
                         text="如上圖所示，出現了「您已連線到網際網路」，可以將瀏覽器打開，測試是否能上網。不能請點選「我需要協助」。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/win/10_6.png",
+                            ),
                         ],
                     ),
                 ]
@@ -784,7 +831,10 @@ def handle_message(event):
                         title="第一步：點擊網路偏好服務",
                         text="如上圖所示，\n滑鼠移至 WIFI 圖示左鍵點擊後，\n再點選網路偏好服務。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/mac/m1.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -792,7 +842,10 @@ def handle_message(event):
                         title="第二步：建立 PPPOE 服務",
                         text="插上轉接器後，才會跳出此畫面。\n接者如上圖所示：\n點選設定IPv4 > 建立 PPPOE 服務。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/mac/m2.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -800,7 +853,10 @@ def handle_message(event):
                         title="第三步：輸入網路帳號密碼",
                         text="如上圖所示，輸入HN帳號名稱及密碼，\n不知道帳號可以點擊下面「不知道帳號密碼」",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/mac/m3.png",
+                            ),
                         ],
                     ),
                     CarouselColumn(
@@ -808,7 +864,10 @@ def handle_message(event):
                         title="第四步：完成連線",
                         text="點擊連線後，就可以正常使用連線囉！\n如果還是不能使用，\n請點擊下面「我需要協助」。",
                         actions=[
-                            MessageAction(label="請閱讀上方文字，不要點我", text="請遵守約定"),
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/mac/m4.png",
+                            ),
                         ],
                     ),
                 ]
@@ -824,20 +883,122 @@ def handle_message(event):
         line_bot_api.push_message(user, carousel_template_message)
         line_bot_api.push_message(to=user, messages=TextSendMessage(text))
         line_bot_api.reply_message(event.reply_token, confirm_template_message)
+    # over: 已完成連線
     elif event.message.text == "已完成":
-        text = "很高興你已經可以使用宿舍網路了！我們下次見～"
+        text = "很高興你已經可以使用宿舍網路了！\n我們下次見～"
+        buttons_template_message = utils.ButtonWindow(
+            title="請選擇下一步：",
+            context="你下一步要去哪呢？",
+            number=3,
+            label_list=["回到一開始", "我需要協助", "連線教學"],
+        )
         line_bot_api.push_message(to=user, messages=TextSendMessage(text))
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+    # options: 使用者需要協助的部分
     elif event.message.text == "我需要協助":
-        text = "這邊還沒做, 請等宿網會一下。"
-        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
-    elif event.message.text == "請遵守約定":
-        text = "這邊還沒做, 請等宿網會一下。"
-        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
-    # elif str(event.message.text).split("https") and (
-    #     is_file == "jpeg" or is_file == "png"
-    # ):
-    #     image_message = utils.ImageWindow(origin_path=f"{event.message.text}")
-    #     line_bot_api.reply_message(event.reply_token, confirm_template_message)
+        buttons_template_message = utils.ButtonWindow(
+            title="請問要如何協助你呢？",
+            context="請選擇下面的選項，\n目前有兩種方式。",
+            number=2,
+            label_list=["網路報修", "宿網會"],
+        )
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+    elif event.message.text == "網路報修":
+        carousel_template_message = TemplateSendMessage(
+            alt_text="歡迎使用中華大學宿網會的簡易小機器人, 請至手機查看訊息。",
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/fix/01.png",
+                        title="第一步：進入學生資訊系統",
+                        text="如上圖所示。進入學校首頁, 前往學生資訊系統。下方按鈕可以直接前往。（建議搭配電腦使用）",
+                        actions=[
+                            URIAction(
+                                label="前往學生資訊系統",
+                                uri=f"https://student2.chu.edu.tw/",
+                            ),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/fix/02.png",
+                        title="第二步：登入學生資訊系統",
+                        text="如上圖所示。\n輸入帳號及密碼。",
+                        actions=[
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/fix/02.png",
+                            ),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/fix/03.png",
+                        title="第三步：點擊學生宿舍報修系統",
+                        text="如上圖所示。\n【左方導航列】 >【學務系統】>【學生宿舍報修系統】。",
+                        actions=[
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/fix/03.png",
+                            ),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/fix/04.png",
+                        title="第四步：點擊宿舍報修",
+                        text="如上圖所示。\n【上方導航列】 >【宿舍報修&報修查詢】>【宿舍報修】。",
+                        actions=[
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/fix/04.png",
+                            ),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/fix/05.png",
+                        title="第五步：填寫報修申請表",
+                        text="如上圖所示。\n建議使用大圖觀看，請將需求填寫詳細，並留下地點資訊。",
+                        actions=[
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/fix/05.png",
+                            ),
+                        ],
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=f"{host}/static/img/fix/local.jpg",
+                        title="需要尋找我們？",
+                        text="我們的辦公室如上圖所示。\n位於三宿(萊爾富那一棟)，男生宿舍大門右手邊。",
+                        actions=[
+                            URIAction(
+                                label="點我，觀看完整圖片",
+                                uri=f"{host}/static/img/fix/local.jpg",
+                            ),
+                        ],
+                    ),
+                ]
+            ),
+        )
+        ConfirmWindow = utils.ConfirmWindow(
+            context="請問解決你的問題了嗎？", success_string="需要協助", error_string="已完成"
+        )
+        line_bot_api.push_message(user, carousel_template_message)
+        line_bot_api.reply_message(event.reply_token, ConfirmWindow)
+    elif event.message.text == "宿網會" or event.message.text == "需要協助":
+        image_message = utils.ImageWindow(
+            origin_path=f"{host}/static/img/fix/local.jpg"
+        )
+        text_message = "服務時間：\n每週一至週四，20:00 至 21:30。\n=\n服務地點：三宿管制門右手邊(萊爾富那棟)\n若不知道位置請看上圖。\n=\n注意：請務必敲門後開門。\n=\n無人回應請用網路報修，我們會於服務時間處理！"
+        buttons_template_message = utils.ButtonWindow(
+            title="請選擇下一步：",
+            context="你下一步要去哪呢？",
+            number=3,
+            label_list=["回到一開始", "我需要協助", "連線教學"],
+        )
+        line_bot_api.push_message(user, image_message)
+        line_bot_api.push_message(user, TextSendMessage(text_message))
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+    elif event.message.text == "意見回饋":
+        text_message = "意見回饋的表單連結：\nhttps://docs.google.com/forms/d/e/1FAIpQLSc3Vt6Ji8SE025whcbZN-GeX_-WvKe23Sl-wEydHc1xD06Cbw/formResponse"
+        line_bot_api.push_message(user, TextSendMessage(text_message))
     else:
         text_message = TextSendMessage(
             text="請點擊下方按鈕開始對話。\n"
@@ -854,6 +1015,7 @@ def handle_message(event):
                     QuickReplyButton(
                         action=MessageAction(label="我需要協助 🤝", text="我需要協助")
                     ),
+                    QuickReplyButton(action=MessageAction(label="意見回饋", text="意見回饋")),
                 ]
             ),
         )

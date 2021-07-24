@@ -1,4 +1,6 @@
 {
-    "python.formatting.provider": "black",
-    "python.pythonPath": "venv/bin/python"
+  "python.pythonPath": "venv/bin/python",
+  "python.formatting.provider": "black",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }
