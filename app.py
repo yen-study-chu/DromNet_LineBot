@@ -98,7 +98,7 @@ def handle_message(event):
                     CarouselColumn(
                         thumbnail_image_url=f"{host}/static/img/new/s2.jpeg",
                         title="第二步：檢查電腦有無網路孔",
-                        text="有網路孔請回答下面視窗，\n無網路孔請往右滑向第三步。\n學校宿舍內無 WelIFI，教室則有公共 WelIFI。",
+                        text="有網路孔請回答下面視窗，\n無網路孔請往右滑向第三步。\n學校宿舍內無 WIFI，教室則有公共 WIFI。",
                         actions=[
                             URIAction(
                                 label="點我，觀看完整圖片",
@@ -109,7 +109,7 @@ def handle_message(event):
                     CarouselColumn(
                         thumbnail_image_url=f"{host}/static/img/new/s3.jpeg",
                         title="第三步：電腦無網路孔需購買轉接頭",
-                        text="轉接頭名稱：「RJ-45 轉 USB」",
+                        text="轉接頭名稱：「RJ-45 轉 USB」",
                         actions=[
                             URIAction(
                                 label="點我，觀看完整圖片",
@@ -595,7 +595,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
 
     elif (
-        event.message.text == "舊生"
+        event.message.text == "查詢網路帳號密碼"
         or event.message.text == "不知道帳號密碼"
         or event.message.text == "重新選擇宿舍"
     ):
@@ -1000,17 +1000,14 @@ def handle_message(event):
         text_message = "意見回饋的表單連結：\nhttps://docs.google.com/forms/d/e/1FAIpQLSc3Vt6Ji8SE025whcbZN-GeX_-WvKe23Sl-wEydHc1xD06Cbw/formResponse"
         line_bot_api.push_message(user, TextSendMessage(text_message))
     else:
-        text_message = TextSendMessage(
-            text="請點擊下方按鈕開始對話。\n"
-            + utils.Separate(30)
-            + "\n請依照自己的身份進行選擇：\n"
-            + "\n尚未入住過宿舍，請點選「我是新生 👋」"
-            + "\n已經入住過宿舍，請點選「我是舊生 🤟」"
-            + utils.Separate(30),
+        text_message = TextSendMessage(｀
+            text="請點擊下方功能選單按鈕使用機器人。\n",
             quick_reply=QuickReply(
                 items=[
                     QuickReplyButton(action=MessageAction(label="我是新生 👋", text="新生")),
-                    QuickReplyButton(action=MessageAction(label="我是舊生 🤟", text="舊生")),
+                    QuickReplyButton(
+                        action=MessageAction(label="查詢網路帳號密碼", text="查詢網路帳號密碼")
+                    ),
                     QuickReplyButton(action=MessageAction(label="連線教學 👌", text="連線教學")),
                     QuickReplyButton(
                         action=MessageAction(label="我需要協助 🤝", text="我需要協助")
