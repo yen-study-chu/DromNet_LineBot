@@ -1000,7 +1000,7 @@ def handle_message(event):
         text_message = "意見回饋的表單連結：\nhttps://docs.google.com/forms/d/e/1FAIpQLSc3Vt6Ji8SE025whcbZN-GeX_-WvKe23Sl-wEydHc1xD06Cbw/formResponse"
         line_bot_api.push_message(user, TextSendMessage(text_message))
     else:
-        text_message = TextSendMessage(｀
+        text_message = TextSendMessage(
             text="請點擊下方功能選單按鈕使用機器人。\n",
             quick_reply=QuickReply(
                 items=[
