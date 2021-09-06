@@ -98,7 +98,7 @@ def handle_message(event):
                     CarouselColumn(
                         thumbnail_image_url=f"{host}/static/img/new/s2.jpeg",
                         title="第二步：檢查電腦有無網路孔",
-                        text="有網路孔請回答下面視窗，\n無網路孔請往右滑向第三步。\n學校宿舍內無 WIFI，教室則有公共 WIFI。",
+                        text="無網路孔請往右滑向第三步。\n學校宿舍內無 WIFI，教室則有公共 WIFI。",
                         actions=[
                             URIAction(
                                 label="點我，觀看完整圖片",
@@ -130,7 +130,7 @@ def handle_message(event):
     # # Step 2 "一宿五樓", "二宿", "三宿"
     elif event.message.text == "男生宿舍":
         buttons_template_message = utils.ButtonWindow(
-            title="請選擇你的宿舍及樓層：",
+            title="請選擇你的宿舍及樓層：\n房號第一碼為宿號，例如1401，就是1宿。",
             context="請選擇下面的選項：",
             number=3,
             label_list=["一宿五樓", "二宿", "三宿"],
@@ -139,7 +139,7 @@ def handle_message(event):
     # # Step 2 "一宿", "四宿"
     elif event.message.text == "女生宿舍":
         buttons_template_message = utils.ButtonWindow(
-            title="請選擇妳的宿舍：",
+            title="請選擇妳的宿舍：\n房號第一碼為宿號，例如1401，就是1宿。",
             context="請選擇下面的選項：",
             number=2,
             label_list=["一宿", "四宿"],
