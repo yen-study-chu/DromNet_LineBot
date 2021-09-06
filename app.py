@@ -130,8 +130,8 @@ def handle_message(event):
     # # Step 2 "一宿五樓", "二宿", "三宿"
     elif event.message.text == "男生宿舍":
         buttons_template_message = utils.ButtonWindow(
-            title="請選擇你的宿舍及樓層：\n房號第一碼為宿號，例如1401，就是1宿。",
-            context="請選擇下面的選項：",
+            title="請選擇你的宿舍及樓層：",
+            context="例如房號：1401，第一位為宿舍號碼，第二位為樓層，後兩碼為房號。\n請選擇下面的選項：",
             number=3,
             label_list=["一宿五樓", "二宿", "三宿"],
         )
@@ -139,8 +139,8 @@ def handle_message(event):
     # # Step 2 "一宿", "四宿"
     elif event.message.text == "女生宿舍":
         buttons_template_message = utils.ButtonWindow(
-            title="請選擇妳的宿舍：\n房號第一碼為宿號，例如1401，就是1宿。",
-            context="請選擇下面的選項：",
+            title="請選擇妳的宿舍：",
+            context="例如房號：1401，第一位為宿舍號碼，第二位為樓層，後兩碼為房號。\n請選擇下面的選項：",
             number=2,
             label_list=["一宿", "四宿"],
         )
