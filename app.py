@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, render_template, send_file
+from flask import Flask, request, abort, render_template
 from urllib.parse import urlparse
 
 from linebot import LineBotApi, WebhookHandler
@@ -11,9 +11,8 @@ from linebot.models import (
     MessageAction,
     QuickReply,
     QuickReplyButton,
-    ConfirmTemplate,
 )
-from linebot.models.actions import URIAction
+from linebot.models.actions import URIAction, MessageAction
 from linebot.models.template import CarouselColumn, CarouselTemplate
 
 import utils
@@ -43,15 +42,6 @@ def index():
     return render_template(
         "index.html",
     )
-
-
-@app.route("/static/<path:filepath>/", methods=["GET"])
-def img(filepath=None):
-    if filepath is None:
-        return render_template("404.html")
-    else:
-        with open(f"app/static/{filepath}", "rb") as bites:
-            return send_file(io.BytesIO(bites.read()), mimetype="image/png")
 
 
 @app.route("/callback", methods=["POST"])
@@ -109,7 +99,7 @@ def handle_message(event):
                     CarouselColumn(
                         thumbnail_image_url=f"{host}/static/img/new/s3.jpeg",
                         title="第三步：電腦無網路孔需購買轉接頭",
-                        text="轉接頭名稱：「RJ-45 轉 USB」",
+                        text="轉接頭名稱：「RJ-45 轉 USB」",
                         actions=[
                             URIAction(
                                 label="點我，觀看完整圖片",
@@ -120,13 +110,13 @@ def handle_message(event):
                 ]
             ),
         )
-
         confirm_template_message = utils.ConfirmWindow(
             context="上面步驟已完成，你是屬於？", success_string="男生宿舍", error_string="女生宿舍"
         )
-
-        line_bot_api.push_message(user, carousel_template_message)
-        line_bot_api.reply_message(event.reply_token, confirm_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[carousel_template_message, confirm_template_message],
+        )
     # # Step 2 "一宿五樓", "二宿", "三宿"
     elif event.message.text == "男生宿舍":
         buttons_template_message = utils.ButtonWindow(
@@ -159,9 +149,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
     # # # Step 3 "一宿"
     elif event.message.text == "一宿":
         buttons_template_message = utils.ButtonWindow(
@@ -185,8 +176,10 @@ def handle_message(event):
             number=3,
             label_list=["二宿六樓", "二宿七樓", "二宿八樓"],
         )
-        line_bot_api.push_message(user, buttons_template_message_1)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message_2)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[buttons_template_message_1, buttons_template_message_2],
+        )
     # # # Step 3 "三宿"
     elif event.message.text == "三宿":
         buttons_template_message_1 = utils.ButtonWindow(
@@ -201,8 +194,10 @@ def handle_message(event):
             number=3,
             label_list=["三宿四樓", "三宿五樓", "三宿六樓"],
         )
-        line_bot_api.push_message(user, buttons_template_message_1)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message_2)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[buttons_template_message_1, buttons_template_message_2],
+        )
     # # # Step 3 "四宿"
     elif event.message.text == "四宿":
         buttons_template_message_1 = utils.ButtonWindow(
@@ -217,9 +212,10 @@ def handle_message(event):
             number=3,
             label_list=["四宿四樓", "四宿五樓", "四宿六樓"],
         )
-        line_bot_api.push_message(user, buttons_template_message_1)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message_2)
-
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[buttons_template_message_1, buttons_template_message_2],
+        )
     elif event.message.text == "一宿二樓":
         image_message = utils.ImageWindow(
             origin_path=f"{host}/static/img/hinet/1-2.jpeg"
@@ -233,9 +229,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "一宿三樓":
         image_message = utils.ImageWindow(
@@ -250,9 +247,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "一宿四樓":
         image_message = utils.ImageWindow(
@@ -267,9 +265,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "二宿二樓":
         image_message = utils.ImageWindow(
@@ -284,9 +283,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "二宿三樓":
         image_message = utils.ImageWindow(
@@ -301,9 +301,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "二宿四樓":
         image_message = utils.ImageWindow(
@@ -318,9 +319,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "二宿五樓":
         image_message = utils.ImageWindow(
@@ -335,9 +337,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "二宿六樓":
         image_message = utils.ImageWindow(
@@ -352,9 +355,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "二宿七樓":
         image_message = utils.ImageWindow(
@@ -369,9 +373,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "二宿八樓":
         image_message = utils.ImageWindow(
@@ -386,9 +391,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "三宿一樓":
         image_message = utils.ImageWindow(
@@ -403,9 +409,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "三宿二樓":
         image_message = utils.ImageWindow(
@@ -420,9 +427,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "三宿三樓":
         image_message = utils.ImageWindow(
@@ -437,9 +445,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "三宿四樓":
         image_message = utils.ImageWindow(
@@ -454,9 +463,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "三宿五樓":
         image_message = utils.ImageWindow(
@@ -471,9 +481,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "三宿六樓":
         image_message = utils.ImageWindow(
@@ -488,9 +499,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "四宿一樓":
         image_message = utils.ImageWindow(
@@ -505,9 +517,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "四宿二樓":
         image_message = utils.ImageWindow(
@@ -522,9 +535,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "四宿三樓":
         image_message = utils.ImageWindow(
@@ -539,9 +553,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "四宿四樓":
         image_message = utils.ImageWindow(
@@ -556,9 +571,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "四宿五樓":
         image_message = utils.ImageWindow(
@@ -573,9 +589,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif event.message.text == "四宿六樓":
         image_message = utils.ImageWindow(
@@ -590,9 +607,10 @@ def handle_message(event):
             number=3,
             label_list=["連線教學", "網路報修", "重新選擇宿舍"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, alert_message)
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[image_message, alert_message, buttons_template_message],
+        )
 
     elif (
         event.message.text == "查詢網路帳號密碼"
@@ -719,9 +737,14 @@ def handle_message(event):
             number=3,
             label_list=["不知道帳號密碼", "我需要協助", "已完成"],
         )
-        line_bot_api.push_message(to=user, messages=carousel_template_message)
-        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
-        line_bot_api.reply_message(event.reply_token, confirm_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[
+                carousel_template_message,
+                TextSendMessage(text),
+                confirm_template_message,
+            ],
+        )
     # options: 網路帳號密碼查詢,
     elif event.message.text == "Windows 10":
         user = event.source.user_id
@@ -816,9 +839,14 @@ def handle_message(event):
             number=3,
             label_list=["不知道帳號密碼", "我需要協助", "已完成"],
         )
-        line_bot_api.push_message(user, carousel_template_message)
-        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
-        line_bot_api.reply_message(event.reply_token, confirm_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[
+                carousel_template_message,
+                TextSendMessage(text),
+                confirm_template_message,
+            ],
+        )
     # options: 網路帳號密碼查詢,
     elif event.message.text == "macOS":
         user = event.source.user_id
@@ -880,9 +908,14 @@ def handle_message(event):
             number=3,
             label_list=["不知道帳號密碼", "我需要協助", "已完成"],
         )
-        line_bot_api.push_message(user, carousel_template_message)
-        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
-        line_bot_api.reply_message(event.reply_token, confirm_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[
+                carousel_template_message,
+                TextSendMessage(text),
+                confirm_template_message,
+            ],
+        )
     # over: 已完成連線
     elif event.message.text == "已完成":
         text = "很高興你已經可以使用宿舍網路了！\n我們下次見～"
@@ -892,8 +925,10 @@ def handle_message(event):
             number=3,
             label_list=["回到一開始", "我需要協助", "連線教學"],
         )
-        line_bot_api.push_message(to=user, messages=TextSendMessage(text))
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[TextSendMessage(text), buttons_template_message],
+        )
     # options: 使用者需要協助的部分
     elif event.message.text == "我需要協助":
         buttons_template_message = utils.ButtonWindow(
@@ -980,8 +1015,9 @@ def handle_message(event):
         ConfirmWindow = utils.ConfirmWindow(
             context="請問解決你的問題了嗎？", success_string="需要協助", error_string="已完成"
         )
-        line_bot_api.push_message(user, carousel_template_message)
-        line_bot_api.reply_message(event.reply_token, ConfirmWindow)
+        line_bot_api.reply_message(
+            event.reply_token, messages=[carousel_template_message, ConfirmWindow]
+        )
     elif event.message.text == "宿網會" or event.message.text == "需要協助":
         image_message = utils.ImageWindow(
             origin_path=f"{host}/static/img/fix/local.jpg"
@@ -993,12 +1029,17 @@ def handle_message(event):
             number=3,
             label_list=["回到一開始", "我需要協助", "連線教學"],
         )
-        line_bot_api.push_message(user, image_message)
-        line_bot_api.push_message(user, TextSendMessage(text_message))
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=[
+                image_message,
+                TextSendMessage(text_message),
+                buttons_template_message,
+            ],
+        )
     elif event.message.text == "意見回饋":
         text_message = "意見回饋的表單連結：\nhttps://docs.google.com/forms/d/e/1FAIpQLSc3Vt6Ji8SE025whcbZN-GeX_-WvKe23Sl-wEydHc1xD06Cbw/formResponse"
-        line_bot_api.push_message(user, TextSendMessage(text_message))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text_message))
     else:
         text_message = TextSendMessage(
             text="請點擊下方功能選單按鈕使用機器人。\n",
