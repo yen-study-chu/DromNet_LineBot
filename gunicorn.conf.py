@@ -1,4 +1,4 @@
 import os
 
 workers = 4
-bind = f"0.0.0.0:{os.environ.get('PORT')}"
+bind = f"{os.environ.get('IP')}:{os.environ.get('PORT')}"
